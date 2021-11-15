@@ -43,7 +43,7 @@ uint64_t toast(uint16_t x){
 }
 
 int main(){
-    for(uint16_t i = 1000; i < 2000; i++){
+    for(uint16_t i = 2000; i < 2022; i++){
         printf("%u %zu\n",i,toast(i));
     }
 }
