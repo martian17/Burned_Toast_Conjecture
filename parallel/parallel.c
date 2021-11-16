@@ -47,14 +47,14 @@ uint64_t toast(uint16_t x){
 
 
 typedef struct{
-    pthread_t thread;
-    uint16_t x;
-    uint16_t result;
-    bool kill;
-    bool active;
+    volatile pthread_t thread;
+    volatile uint16_t x;
+    volatile uint64_t result;
+    volatile bool kill;
+    volatile bool active;
 }thread_interface;
 
-void* thread_func(void* arg){//arg isn't used for now
+void* thread_func(void* arg){
     thread_interface* interface = (thread_interface*)arg;
     while(1){
         //printf("kill signal: %s\n",interface->kill?"true":"false");
@@ -89,7 +89,7 @@ int main(){
     uint16_t i0 = 2;
     uint16_t i1 = 2;//frontier
     uint16_t max = 1000;
-    uint16_t* result = malloc(max*sizeof(uint16_t));
+    uint64_t* result = malloc(max*sizeof(uint16_t));
     result[0] = 0;
     result[1] = 2;
     printf("0 0\n");
@@ -103,7 +103,7 @@ int main(){
                     interfaces[i].result = 0;
                     //print the result
                     while(result[i0]){
-                        printf("%d %d\n",i0,result[i0]);
+                        printf("%d %zu\n",i0,result[i0]);
                         i0++;
                     }
                     if(i0 == max){
