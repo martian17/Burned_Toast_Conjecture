@@ -36,7 +36,7 @@ uint64_t toast(uint16_t x){
         //n = (n+1)%x;
         //faster than modulo
         n++;
-        if(n == x)n = 0;
+        if(n == x+1)n = 1;
     }while(isIrrational(arr,x));
     free(arr);
     return cnt;
@@ -44,6 +44,7 @@ uint64_t toast(uint16_t x){
 
 int main(){
     for(uint16_t i = 2; i < 1000; i++){
-        printf("%u %zu\n",i,toast(i));
+        uint64_t result = toast(i);
+        printf("%u\t%zu\t%zu\t%zu\n",i,result,result/i,result%i);
     }
 }

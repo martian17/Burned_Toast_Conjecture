@@ -21,25 +21,50 @@ uint64_t toast(uint16_t x){
     for(uint16_t i = 0; i < x; i++){
         arr[i] = i;
     }
+    uint16_t* buff = malloc(x*sizeof(uint16_t));
     uint64_t cnt = 0;
-    uint16_t n = 1;
-    do{
-        cnt++;
-        for(uint16_t i = 0; i < n>>1; i++){
-            uint16_t temp = arr[i];
-            arr[i] = ~arr[n-i-1];
-            arr[n-i-1] = ~temp;
+    //uint16_t n = 1; no more n, bye bye!
+    ////instead we have mapping
+    ////uint16_t* mapping = malloc(x*sizeof(uint16_t));
+    /*for(i; i < (x+1)>>1; i++){
+        buff[i] = ~arr[x-i<<1];
+    }
+    for(i; i < x; i++){
+        buff[i] = arr[1-x+i<<1];
+    }*/
+    
+    /*
+    let test = function(x){
+        let arr = [];
+        let i = 0;
+        for(i; i < (x+1)>>1; i++){
+            console.log("f",x-(i<<1)-1);
+            arr.push(x-(i<<1)-1);
         }
-        if(n&1){//if odd, do the middle
-            int idx = n>>1;//divide by 2 faster!
-            arr[idx] = ~arr[idx];
+        for(i; i < x; i++){
+            console.log("b",-x+(i<<1));
+            arr.push(-x+(i<<1));
         }
-        //n = (n+1)%x;
-        //faster than modulo
-        n++;
-        if(n == x)n = 0;
-    }while(isIrrational(arr,x));
+        return arr;
+    }
+    */
+    
+    while(isIrrational(arr,x)){
+        cnt += x;
+        int i = 0;
+        for(i; i < (x+1)>>1; i++){
+            buff[i] = ~arr[x-(i<<1)-1];
+        }
+        for(i; i < x; i++){
+            buff[i] = arr[-x+(i<<1)];
+        }
+        //swap the buffer
+        uint16_t* temp = arr;
+        arr = buff;
+        buff = temp;
+    }
     free(arr);
+    free(buff);
     return cnt;
 }
 
