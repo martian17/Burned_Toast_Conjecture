@@ -17,57 +17,32 @@ bool isIrrational(uint16_t* arr, uint16_t len){
 
 
 uint64_t toast(uint16_t x){
-    uint16_t* arr = malloc(x*sizeof(uint16_t));
+    /*uint16_t* arr = malloc(x*sizeof(uint16_t));
     for(uint16_t i = 0; i < x; i++){
         arr[i] = i;
+        //printf("%d\n",i);
     }
     uint16_t* buff = malloc(x*sizeof(uint16_t));
     uint64_t cnt = 0;
-    //uint16_t n = 1; no more n, bye bye!
-    ////instead we have mapping
-    ////uint16_t* mapping = malloc(x*sizeof(uint16_t));
-    /*for(i; i < (x+1)>>1; i++){
-        buff[i] = ~arr[x-i<<1];
-    }
-    for(i; i < x; i++){
-        buff[i] = arr[1-x+i<<1];
-    }*/
-    
-    /*
-    let test = function(x){
-        let arr = [];
-        let i = 0;
-        for(i; i < (x+1)>>1; i++){
-            console.log("f",x-(i<<1)-1);
-            arr.push(x-(i<<1)-1);
+    do{
+        cnt += (uint64_t)x;
+        uint16_t i = 0;
+        for(i; i < (x+1)/2; i++){
+            buff[i] = ~arr[x-(i*2)-1];
         }
         for(i; i < x; i++){
-            console.log("b",-x+(i<<1));
-            arr.push(-x+(i<<1));
-        }
-        return arr;
-    }
-    */
-    
-    while(isIrrational(arr,x)){
-        cnt += x;
-        int i = 0;
-        for(i; i < (x+1)>>1; i++){
-            buff[i] = ~arr[x-(i<<1)-1];
-        }
-        for(i; i < x; i++){
-            buff[i] = arr[-x+(i<<1)];
+            buff[i] = arr[-x+(i*2)];
         }
         //swap the buffer
         uint16_t* temp = arr;
         arr = buff;
         buff = temp;
-    }
+    }while(isIrrational(arr,x));
     free(arr);
     free(buff);
-    return cnt;
+    return cnt;*/
+    return (uint64_t)x;
 }
-
 
 
 
@@ -87,7 +62,7 @@ void* thread_func(void* arg){
             fprintf(stderr,"kill signal recieved\n");
             break;
         }else if(interface->active){
-            int x = interface->x;
+            uint16_t x = interface->x;
             interface->result = toast(x);
             interface->active = false;
         }
@@ -113,7 +88,7 @@ int main(int argv, char** argc){
     //fprintf(stderr,"num: %u\n",interfaces[1].num);
     uint16_t i0 = 2;
     uint16_t i1 = 2;//frontier
-    uint16_t max = 32760;
+    uint16_t max = 100;//32760;
     uint64_t* result = malloc(max*sizeof(uint16_t));
     for(int i = 0; i < max; i++){
         result[i] = 0;//initializing
